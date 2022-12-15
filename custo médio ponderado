@@ -1,0 +1,81 @@
+gfgdf
+dfg
+dfg
+dfg
+dfgrareg aergaer gaergreg aerg areg fdgs fgsdfgsdf
+gse rgsdf gsd
+gser gdsrf gdsf gdsf
+gres gregs erg sdg sd
+Option Explicit
+Dim sku As String
+Dim data As Date
+Dim quant, price As Double
+Dim i, vrSheets As Integer
+Dim PlsExit As Double
+
+
+Sub Custo()
+Dim range1, cell As Range
+Application.ScreenUpdating = False
+Set range1 = Range("a2:a2500")
+
+For Each cell In range1
+    If AnalisarLinha(cell) Then
+        cell.Offset(0, 14).Interior.Color = 5296274
+        RegistrarLinha
+    End If
+Next
+End Sub
+
+Function AnalisarLinha(cell As Range) As Boolean
+    If cell.Offset(0, 9).Value <> "" Then
+        sku = cell.Offset(0, 9).Value
+        data = cell.Value
+        quant = cell.Offset(0, 8).Value
+        price = cell.Offset(0, 12).Value
+        AnalisarLinha = True
+    Else
+        AnalisarLinha = False
+    End If
+
+End Function
+Sub RegistrarLinha()
+PlsExit = 0
+vrSheets = ThisWorkbook.Worksheets.Count
+For i = 1 To vrSheets
+
+    If Trim(sku) <> "" Then
+    With Worksheets(i).Range("b3:b9")
+            Worksheets(i).Select
+            ColocarDados
+            If PlsExit = 1 Then
+            Exit For
+            End If
+    End With
+    End If
+Next
+End Sub
+Function ColocarDados()
+Dim range2, range3, cell2, cell3 As Range
+Dim data2 As Date
+Dim sair As Double
+Set range2 = Range("b11:b66")
+Set range3 = Range("b3:b9")
+PlsExit = 0
+For Each cell3 In range3
+    If cell3 = sku Then
+        For Each cell2 In range2
+            If cell2 = data Then
+                cell2.Offset(0, 5).Value = quant
+                PlsExit = 1
+                    If PlsExit = 1 Then
+                    Exit For
+                    End If
+            If PlsExit = 1 Then
+            Exit For
+            End If
+            End If
+        Next
+    End If
+Next
+End Function
